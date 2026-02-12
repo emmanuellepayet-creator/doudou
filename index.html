@@ -133,56 +133,20 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-    <!-- ANIMAL WITH HEART -->
-    <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="fur" x1="0" x2="1">
-          <stop offset="0" stop-color="#f7c7a1"/>
-          <stop offset="1" stop-color="#f2a97b"/>
-        </linearGradient>
-        <linearGradient id="heart" x1="0" x2="1">
-          <stop offset="0" stop-color="#ff4d7d"/>
-          <stop offset="1" stop-color="#ff1f68"/>
-        </linearGradient>
-      </defs>
-
-      <path d="M250 50 C250 33 270 25 282 38
-               C294 25 314 33 314 50
-               C314 78 282 92 282 106
-               C282 92 250 78 250 50Z"
-            fill="url(#heart)"/>
-
-      <path d="M90 120 C90 70 140 40 190 60
-               C240 40 290 70 290 120
-               C290 180 240 210 190 210
-               C140 210 90 180 90 120Z"
-            fill="url(#fur)"/>
-
-      <path d="M110 92 L95 55 L140 78 Z" fill="#f2a97b"/>
-      <path d="M270 92 L285 55 L240 78 Z" fill="#f2a97b"/>
-
-      <circle cx="160" cy="130" r="8"/>
-      <circle cx="220" cy="130" r="8"/>
-
-      <path d="M190 144 C186 144 182 148 182 152
-               C182 160 190 164 190 170
-               C190 164 198 160 198 152
-               C198 148 194 144 190 144Z"
-            fill="#ff7aa2"/>
-    </svg>
-
+   <img id="mainGif" class="art" src="https://media.tenor.com/E_2_m8A7_mUAAAAC/pucca.gif" alt="Pucca attend">
+    
     <h1>doudou tu veux etre mon valentin?</h1>
 
     <section class="button-zone" id="zone">
-      <button id="yesBtn">Yes</button>
-      <button id="noBtn">No</button>
+      <button id="yesBtn">Oui</button>
+      <button id="noBtn">Non</button>
     </section>
 
     <!-- HINT -->
-    <div class="hint" id="hint">“Non” mais poukoiiiiiii???</div>
+    <div class="hint" id="hint">je crois que t'as pas le choix doudou</div>
 
     <section class="result" id="result">
-      <h2>YAY! 🎉</h2>
+      <h2>OUIIII MAMOURRRR <3</h2>
       <img
         class="fireworks"
         src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
@@ -288,18 +252,22 @@
     });
 
     noBtn.addEventListener("click", e => e.preventDefault());
-
-    /* ---------- YES CLICK ---------- */
-    yesBtn.addEventListener("click", () => {
-      zone.style.display = "none";
-      hint.style.display = "none";     // HIDE THE HINT
-      result.style.display = "block";
-      resizeConfettiCanvas();
-      fullScreenConfetti();
-    });
+/* ---------- YES CLICK ---------- */
+yesBtn.addEventListener("click", () => {
+  // On change le GIF de Pucca qui attend par celui du bisou
+  document.getElementById("mainGif").src = "https://media.tenor.com/7YV35P8_Mv4AAAAC/pucca-x-garu-pucca-x-garu-kiss.gif";
+  
+  zone.style.display = "none";
+  hint.style.display = "none";     
+  result.style.display = "block";
+  resizeConfettiCanvas();
+  fullScreenConfetti();
+});
+    
   </script>
 </body>
 </html>
+
 
 
 

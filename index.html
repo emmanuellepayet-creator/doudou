@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Tu veux être mon valentin?</title>
+  <title>Doudou tu veux être mon valentin?</title>
 
-  <!-- Confetti library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -30,7 +29,6 @@
       padding: 16px;
     }
 
-    /* FULL-SCREEN CONFETTI CANVAS */
     #confettiCanvas {
       position: fixed;
       inset: 0;
@@ -52,9 +50,11 @@
 
     .art {
       width: min(260px, 80vw);
+      height: auto;
       margin: 0 auto 10px;
       display: block;
       filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
+      border-radius: 12px;
     }
 
     h1 {
@@ -116,12 +116,6 @@
       margin: 10px 0;
     }
 
-    .fireworks {
-      width: min(380px, 90vw);
-      margin: 0 auto;
-      display: block;
-    }
-
     @keyframes pop {
       from { transform: scale(.96); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -133,25 +127,22 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-   <img id="mainGif" class="art" src="https://media.tenor.com/E_2_m8A7_mUAAAAC/pucca.gif" alt="Pucca attend">
+    <img id="mainGif" class="art" src="https://media.tenor.com/E_2_m8A7_mUAAAAC/pucca.gif" alt="Pucca attend">
     
-    <h1>doudou tu veux etre mon valentin?</h1>
+    <div id="main-content">
+        <h1>doudou tu veux etre mon valentin?</h1>
 
-    <section class="button-zone" id="zone">
-      <button id="yesBtn">Oui</button>
-      <button id="noBtn">Non</button>
-    </section>
+        <section class="button-zone" id="zone">
+          <button id="yesBtn">Oui</button>
+          <button id="noBtn">Non</button>
+        </section>
 
-    <!-- HINT -->
-    <div class="hint" id="hint">je crois que t'as pas le choix doudou</div>
+        <div class="hint" id="hint">je crois que t'as pas le choix doudou</div>
+    </div>
 
     <section class="result" id="result">
-      <h2>OUIIII MAMOURRRR <3</h2>
-      <img
-        class="fireworks"
-        src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
-        alt="Fireworks"
-      />
+      <h2>OUIIII MAMOURRRR ❤️</h2>
+      <p>Je t'aime trop !</p>
     </section>
   </main>
 
@@ -161,6 +152,8 @@
     const noBtn = document.getElementById("noBtn");
     const result = document.getElementById("result");
     const hint = document.getElementById("hint");
+    const mainContent = document.getElementById("main-content");
+    const mainGif = document.getElementById("mainGif");
 
     /* ---------- CONFETTI ---------- */
     const confettiCanvas = document.getElementById("confettiCanvas");
@@ -169,48 +162,25 @@
       const dpr = Math.max(1, window.devicePixelRatio || 1);
       confettiCanvas.width = Math.floor(window.innerWidth * dpr);
       confettiCanvas.height = Math.floor(window.innerHeight * dpr);
-      confettiCanvas.style.width = "100vw";
-      confettiCanvas.style.height = "100vh";
     }
 
     resizeConfettiCanvas();
     window.addEventListener("resize", resizeConfettiCanvas);
-    window.addEventListener("orientationchange", () => setTimeout(resizeConfettiCanvas, 150));
 
-    const confettiInstance = confetti.create(confettiCanvas, {
-      resize: false,
-      useWorker: true
-    });
+    const confettiInstance = confetti.create(confettiCanvas, { resize: false, useWorker: true });
 
     function fullScreenConfetti() {
-      const end = Date.now() + 1600;
-
+      const end = Date.now() + 2000;
       (function frame() {
-        confettiInstance({
-          particleCount: 12,
-          spread: 90,
-          startVelocity: 45,
-          ticks: 180,
-          origin: { x: Math.random(), y: Math.random() * 0.3 }
-        });
+        confettiInstance({ particleCount: 10, spread: 100, origin: { x: Math.random(), y: Math.random() * 0.3 } });
         if (Date.now() < end) requestAnimationFrame(frame);
       })();
-
-      setTimeout(() => {
-        confettiInstance({
-          particleCount: 300,
-          spread: 140,
-          startVelocity: 60,
-          ticks: 220,
-          origin: { x: 0.5, y: 0.55 }
-        });
-      }, 300);
     }
 
     /* ---------- YES BUTTON GROWS ---------- */
     let yesScale = 1;
     function growYes() {
-      yesScale = Math.min(2.2, yesScale + 0.1);
+      yesScale = Math.min(3, yesScale + 0.15);
       yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
     }
 
@@ -222,53 +192,33 @@
     function moveNo(px, py) {
       const z = zone.getBoundingClientRect();
       const b = noBtn.getBoundingClientRect();
-
       let dx = (b.left + b.width / 2) - px;
       let dy = (b.top + b.height / 2) - py;
       let mag = Math.hypot(dx, dy) || 1;
-      dx /= mag;
-      dy /= mag;
-
-      let newLeft = (b.left - z.left) + dx * 150;
-      let newTop  = (b.top - z.top) + dy * 150;
-
+      let newLeft = (b.left - z.left) + (dx / mag) * 150;
+      let newTop  = (b.top - z.top) + (dy / mag) * 150;
       newLeft = clamp(newLeft, 0, z.width - b.width);
       newTop  = clamp(newTop, 0, z.height - b.height);
-
       noBtn.style.left = newLeft + "px";
       noBtn.style.top = newTop + "px";
       noBtn.style.transform = "none";
-
       growYes();
     }
 
     zone.addEventListener("pointermove", e => {
       const b = noBtn.getBoundingClientRect();
-      const d = Math.hypot(
-        (b.left + b.width / 2) - e.clientX,
-        (b.top + b.height / 2) - e.clientY
-      );
-      if (d < 140) moveNo(e.clientX, e.clientY);
+      const d = Math.hypot((b.left + b.width / 2) - e.clientX, (b.top + b.height / 2) - e.clientY);
+      if (d < 120) moveNo(e.clientX, e.clientY);
     });
 
-    noBtn.addEventListener("click", e => e.preventDefault());
-/* ---------- YES CLICK ---------- */
-yesBtn.addEventListener("click", () => {
-  // On change le GIF de Pucca qui attend par celui du bisou
-  document.getElementById("mainGif").src = "https://media.tenor.com/7YV35P8_Mv4AAAAC/pucca-x-garu-pucca-x-garu-kiss.gif";
-  
-  zone.style.display = "none";
-  hint.style.display = "none";     
-  result.style.display = "block";
-  resizeConfettiCanvas();
-  fullScreenConfetti();
-});
-    
+    /* ---------- YES CLICK ---------- */
+    yesBtn.addEventListener("click", () => {
+      // On change le GIF pour le bisou
+      mainGif.src = "https://media.tenor.com/7YV35P8_Mv4AAAAC/pucca-x-garu-pucca-x-garu-kiss.gif";
+      mainContent.style.display = "none";
+      result.style.display = "block";
+      fullScreenConfetti();
+    });
   </script>
 </body>
 </html>
-
-
-
-
-
